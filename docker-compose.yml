@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  insight:
+    build:
+      ./insight
+    restart: always
+    network_mode: "host"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+    depends_on:
+      - komodod
+  komodod:
+    build:
+      ./komodod
+    network_mode: "host"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+    volumes:
+      - komodod-assetchain:/komodo
+    restart: always
+volumes:
+  komodod-assetchain:
