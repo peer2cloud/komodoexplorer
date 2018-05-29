@@ -5,7 +5,7 @@ echo "...Creating bitcore-node.json"
 cat <<EOF > /insight/livenet/bitcore-node.json
 {
   "network": "livenet",
-  "port": 3001,
+  "port": ${GUIPORT},
   "services": [
     "bitcoind",
     "insight-api",
@@ -17,10 +17,10 @@ cat <<EOF > /insight/livenet/bitcore-node.json
       "connect": [
         {
           "rpchost": "127.0.0.1",
-          "rpcport": 8232,
+          "rpcport": "${RPCPORT}",
           "rpcuser": "${RPCUSER:-rpcuser}",
           "rpcpassword": "${RPCPASSWORD:-rpcpassword}",
-          "zmqpubrawtx": "tcp://127.0.0.1:8332"
+          "zmqpubrawtx": "tcp://127.0.0.1:${ZMQPPORT}"
         }
       ]
     }

@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  insight:
+  insight_kmd:
     build:
       ./insight
     restart: always
@@ -9,6 +9,9 @@ services:
     environment:
       - RPCUSER
       - RPCPASSWORD
+      - GUIPORT=3001
+      - RPCPORT=8232
+      - ZMQPPORT=8332
     depends_on:
       - komodod
   komodod:
