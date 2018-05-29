@@ -1,7 +1,6 @@
 #/bin/bash
-compose_file="docker-compose-test.yml"
+compose_file="docker-compose.yml"
 str_service=""
-str_volume=""
 function generatecompose {
     if [[ $# -ne 2 ]]; then
         echo "ERROR: For call functions createconfig use:"
@@ -15,7 +14,7 @@ str_service="${str_service}
     build:
       ./insight
     restart: always
-    network_mode: "host"
+    network_mode: \"host\"
     environment:
       - RPCUSER
       - RPCPASSWORD
@@ -25,10 +24,7 @@ str_service="${str_service}
     depends_on:
       - komodod
 "
-str_volume="${str_volume}
-  komodod-assetchain-${add}:"
 }
-
 echo "version: '3'" > $compose_file
 source coinlist
 generatecompose KMD "8232 8332 3001"
@@ -43,7 +39,7 @@ ${str_service}
   komodod:
     build:
       ./komodod
-    network_mode: "host"
+    network_mode: \"host\"
     environment:
       - RPCUSER
       - RPCPASSWORD
@@ -51,4 +47,5 @@ ${str_service}
       - komodod-assetchain:/komodo
     restart: always
 volumes:
-${str_volume}">> $compose_file
+  komodod-assetchain:
+" >> $compose_file
