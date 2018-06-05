@@ -18,10 +18,6 @@ RUN apt-get -y update \
  && npm install http-signature \
  && nvm use v4; /insight/node_modules/bitcore-node-komodo/bin/bitcore-node create mainnet \
  && cd /insight/mainnet && npm install --save fs-extra && npm install --save http-signature har-validator \
- && npm install --save asynckit aws-sign2 aws4 basic-auth caseless  \
-    compressible combined-stream forever-agent form-data is-typedarray isstream \
-    json-stringify-safe lodash oauth-sign on-headers morgan compression performance-now \
-    tough-cookie tunnel-agent \
  && /insight/node_modules/bitcore-node-komodo/bin/bitcore-node install git+https://git@github.com/peer2cloud/insight-api-komodo git+https://git@github.com/peer2cloud/insight-ui-komodo
 COPY entrypoint.sh /insight/mainnet/
 
