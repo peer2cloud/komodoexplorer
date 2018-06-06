@@ -2,14 +2,14 @@
 set -e
 
 echo "...Creating bitcore-node.json"
-cat <<EOF > /insight/livenet/bitcore-node.json
+cat <<EOF > /insight/mainnet/bitcore-node.json
 {
-  "network": "livenet",
-  "port": 3001,
+  "network": "mainnet",
+  "port": ${GUIPORT},
   "services": [
     "bitcoind",
-    "insight-api",
-    "insight-ui",
+    "insight-api-komodo",
+    "insight-ui-komodo",
     "web"
   ],
   "servicesConfig": {
@@ -17,10 +17,10 @@ cat <<EOF > /insight/livenet/bitcore-node.json
       "connect": [
         {
           "rpchost": "127.0.0.1",
-          "rpcport": 8232,
+          "rpcport": "${RPCPORT}",
           "rpcuser": "${RPCUSER:-rpcuser}",
           "rpcpassword": "${RPCPASSWORD:-rpcpassword}",
-          "zmqpubrawtx": "tcp://127.0.0.1:8332"
+          "zmqpubrawtx": "tcp://127.0.0.1:${ZMQPPORT}"
         }
       ]
     }
@@ -28,4 +28,5 @@ cat <<EOF > /insight/livenet/bitcore-node.json
 }
 EOF
 
-exec /usr/bin/bitcore start
+exec /insight/mainnet/node_modules/bitcore-node-komodo/bin/bitcore-node start
+#/usr/bin/bitcore start

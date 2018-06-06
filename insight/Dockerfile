@@ -3,23 +3,23 @@ FROM ubuntu:16.04
 RUN mkdir /insight
 ENV HOME /insight
 
+WORKDIR /insight
 RUN apt-get -y update \
- && apt-get -y install git libzmq3-dev build-essential curl apt-utils \
+ && apt-get -y install git libzmq3-dev build-essential curl apt-utils wget \
  && apt-get -y install iputils-ping \
- && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
- && apt-get -y install nodejs \
- && npm install -g --unsafe-perm=true bitcore \
+ && apt-get -y install nodejs-legacy npm \
+ && wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash \
+ && export NVM_DIR="$HOME/.nvm" \
+ && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" \
+ && nvm install v4 \
+ && npm install git+https://git@github.com/peer2cloud/bitcore-node-komodo \
  && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \ 
- && /usr/bin/bitcore create /insight/livenet \
- && cd /insight/livenet \
- && /usr/bin/bitcore install insight-api insight-ui \
- && rm -rf /insight/livenet/node_modules/insight-api \
- && rm -rf /insight/livenet/node_modules/insight-ui \
- && rm -rf /insight/livenet/node_modules/bitcore-lib
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  \
+ && npm install http-signature \
+ && nvm use v4; /insight/node_modules/bitcore-node-komodo/bin/bitcore-node create mainnet \
+ && cd /insight/mainnet && npm install --save fs-extra && npm install --save http-signature har-validator \
+ && /insight/node_modules/bitcore-node-komodo/bin/bitcore-node install git+https://git@github.com/peer2cloud/insight-api-komodo git+https://git@github.com/peer2cloud/insight-ui-komodo
+COPY entrypoint.sh /insight/mainnet/
 
-# Copy configuration file for Insight
-COPY livenet entrypoint.sh /insight/livenet/
-
-WORKDIR /insight/livenet
-CMD ["/insight/livenet/entrypoint.sh"]
+WORKDIR /insight/mainnet
+CMD ["/insight/mainnet/entrypoint.sh"]

@@ -20,6 +20,9 @@ RUN apt-get -y update \
  && ln -sf /komodo/src/komodod /usr/bin/komodod \
  && ln -sf /komodo/zcutil/docker-komodo-cli.sh /usr/bin/komodo-cli
 
-COPY ./entrypoint.sh /
+# && apt-get -y remove m4 g++-multilib \
+# && apt-get -y autoremove \
+
+COPY ./entrypoint.sh ./coinlist /
 
 CMD ["/entrypoint.sh"]

@@ -1,0 +1,51 @@
+#/bin/bash
+compose_file="docker-compose.yml"
+str_service=""
+function generatecompose {
+    if [[ $# -ne 2 ]]; then
+        echo "ERROR: For call functions createconfig use:"
+        echo "generatecompose coins port_string" 
+        exit 1
+    fi
+add="${1,,}"
+ports=($2)
+str_service="${str_service}
+  insight_${add}:
+    build:
+      ./insight
+    restart: always
+    network_mode: \"host\"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+      - GUIPORT=${ports[2]}
+      - RPCPORT=${ports[0]}
+      - ZMQPPORT=${ports[1]}
+    depends_on:
+      - komodod
+"
+}
+echo "version: '3'" > $compose_file
+source coinlist
+generatecompose KMD "8232 8332 3001"
+for i in "${!coin[@]}"
+do
+#    str=(${coin[$i]})
+    generatecompose $i "${coin[$i]}"
+done
+
+echo "services:
+${str_service}
+  komodod:
+    build:
+      ./komodod
+    network_mode: \"host\"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+    volumes:
+      - komodod-assetchain:/komodo
+    restart: always
+volumes:
+  komodod-assetchain:
+" >> $compose_file
