@@ -29,6 +29,20 @@ services:
     depends_on:
       - komodod
 
+  insight_eql:
+    build:
+      ./insight
+    restart: always
+    network_mode: "host"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+      - GUIPORT=3029
+      - RPCPORT=10306
+      - ZMQPPORT=9028
+    depends_on:
+      - komodod
+
   insight_kv:
     build:
       ./insight
@@ -183,6 +197,20 @@ services:
     depends_on:
       - komodod
 
+  insight_glxt:
+    build:
+      ./insight
+    restart: always
+    network_mode: "host"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+      - GUIPORT=3028
+      - RPCPORT=15723
+      - ZMQPPORT=9027
+    depends_on:
+      - komodod
+
   insight_axo:
     build:
       ./insight
@@ -253,7 +281,7 @@ services:
     depends_on:
       - komodod
 
-  insight_prplay:
+  insight_prlpay:
     build:
       ./insight
     restart: always
@@ -388,6 +416,11 @@ services:
       - RPCPASSWORD
     volumes:
       - komodod-assetchain:/komodo
+    restart: always
+  nginx:
+    build:
+      ./nginx
+    network_mode: "host"
     restart: always
 volumes:
   komodod-assetchain:

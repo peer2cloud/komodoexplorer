@@ -1,6 +1,7 @@
 #/bin/bash
 compose_file="docker-compose.yml"
 str_service=""
+
 function generatecompose {
     if [[ $# -ne 2 ]]; then
         echo "ERROR: For call functions createconfig use:"
@@ -32,6 +33,7 @@ for i in "${!coin[@]}"
 do
 #    str=(${coin[$i]})
     generatecompose $i "${coin[$i]}"
+    
 done
 
 echo "services:
@@ -46,6 +48,13 @@ ${str_service}
     volumes:
       - komodod-assetchain:/komodo
     restart: always
+  nginx:
+    build:
+      ./nginx
+    network_mode: \"host\"
+    restart: always
 volumes:
   komodod-assetchain:
 " >> $compose_file
+cp coinlist komodod/
+cp coinlist nginx/rootfs/
