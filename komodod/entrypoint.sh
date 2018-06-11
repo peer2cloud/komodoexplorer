@@ -13,9 +13,8 @@ function createconfig {
         path="$1/$2"
         file="$2.conf"
     fi
-echo "...Checking ${path}/${file}"
-ports=($3)
-
+    echo "...Checking ${path}/${file}"
+    ports=($3)
 if [ ! -e "${path}/${file}" ]; then
     mkdir -p ${path}
     echo "...Creating ${path}/${file}"

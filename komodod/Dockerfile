@@ -12,7 +12,7 @@ RUN apt-get -y update \
         software-properties-common libcurl4-openssl-dev curl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && git clone -b dev https://github.com/KomodoPlatform/komodo.git /komodo \
+ && git clone -b dev https://github.com/jl777/komodo /komodo \
  && cd /komodo \
  && ./autogen.sh \
  && ./configure --with-incompatible-bdb --with-gui || true \
