@@ -52,6 +52,8 @@ ${str_service}
     build:
       ./nginx
     network_mode: \"host\"
+    environment:
+      - DEPLOY_TARGET
     restart: always
 volumes:
   komodod-assetchain:

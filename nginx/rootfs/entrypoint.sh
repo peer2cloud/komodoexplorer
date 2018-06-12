@@ -11,7 +11,7 @@ function createconfig {
     file="$1.conf"
     echo "...Checking ${path}/${file}"
     ports=($2)
-    name=${1,,}
+    name=$add${1,,}
     echo "$1 - <a href='http://$name.komodo.build'>$name.komodo.build</a><br>" >> $nginx_index_file
     echo "Create nginx config fo $1"
     cat <<EOF > ${path}/${file}
@@ -19,7 +19,7 @@ function createconfig {
 ######################################
 server {
     listen  80;
-    server_name $1.komodo.build;
+    server_name $add$1.komodo.build;
 
     error_log /dev/stderr info;
     access_log /dev/stdout;
@@ -43,6 +43,12 @@ EOF
 }
 
 source /coinlist
+
+add=""
+if [[ "${DEPLOY_TARGET}" = "dev" ]]; then
+    add="dev-"
+fi
+
 echo "<html>" > $nginx_index_file
 createconfig KMD "8232 8332 3001"
 for i in "${!coin[@]}"
