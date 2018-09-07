@@ -18,6 +18,28 @@ function createconfig {
 if [ ! -e "${path}/${file}" ]; then
     mkdir -p ${path}
     echo "...Creating ${path}/${file}"
+   if [[ "$2" = "PGT" ]]; then 
+    cat <<EOF > ${path}/${file}
+server=1
+whitelist=127.0.0.1
+txindex=1
+addressindex=1
+timestampindex=1
+spentindex=1
+zmqpubrawtx=tcp://127.0.0.1:${ports[1]}
+zmqpubhashblock=tcp://127.0.0.1:${ports[1]}
+rpcallowip=127.0.0.1
+rpcport=${ports[0]}
+rpcuser=${RPCUSER:-rpcuser}
+rpcpassword=${RPCPASSWORD:-rpcpassword}
+uacomment=bitcore
+showmetrics=0
+addnode=188.166.73.124
+addnode=190.114.254.103
+addnode=190.114.254.104
+addnode=94.237.45.44
+EOF
+   else 
     cat <<EOF > ${path}/${file}
 server=1
 whitelist=127.0.0.1
@@ -42,6 +64,7 @@ addnode=144.76.94.38
 addnode=89.248.166.91
 EOF
 fi
+fi
 }
 
 source /coinlist
@@ -61,7 +84,13 @@ echo
 echo "****************************************************"
 echo "Running: komodod"
 echo "****************************************************"
+cd /komodo
+git pull --rebase
+make clean
+./zcutil/build.sh -j$(nproc)
 cd /komodo/src
+echo "pubkey=" >pubkey.txt
 ./assetchains
+./komodod -ac_name=PGT -ac_supply=10000000 -ac_end=1 &
 exec komodod 
 

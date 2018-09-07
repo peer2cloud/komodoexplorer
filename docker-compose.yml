@@ -15,6 +15,20 @@ services:
     depends_on:
       - komodod
 
+  insight_pgt:
+    build:
+      ./insight
+    restart: always
+    network_mode: "host"
+    environment:
+      - RPCUSER
+      - RPCPASSWORD
+      - GUIPORT=3030
+      - RPCPORT=46705
+      - ZMQPPORT=9029
+    depends_on:
+      - komodod
+
   insight_oot:
     build:
       ./insight
